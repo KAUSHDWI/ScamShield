@@ -12,16 +12,19 @@ const reportRoutes = require("./routes/report");
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://scam-shield-nu.vercel.app",
+];
+
 app.use(
   cors({
-    origin: true,
-    credentials: true,
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
-
-app.options("*", cors());
 
 app.use(express.json());
 
@@ -46,59 +49,14 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: true,
-    credentials: true,
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
 io.on("connection", (socket) => {
   console.log("User connected");
-
-  socket.on("analyzeText", async (text) => {
-    try {
-      let score = 0;
-      const reasons = [];
-      const t = text.toLowerCase();
-
-      if (t.includes("urgent")) {
-        score += 15;
-        reasons.push("Uses urgent language");
-      }
-
-      if (t.includes("no interview")) {
-        score += 20;
-        reasons.push("No interview process");
-      }
-
-      if (t.includes("fee") || t.includes("deposit")) {
-        score += 30;
-        reasons.push("Asking for money");
-      }
-
-      if (t.includes("bank") || t.includes("account")) {
-        score += 25;
-        reasons.push("Requests bank details");
-      }
-
-      if (t.includes("guaranteed")) {
-        score += 15;
-        reasons.push("Promises guaranteed job");
-      }
-
-      let level = "Low";
-      if (score > 60) level = "High";
-      else if (score > 30) level = "Medium";
-
-      socket.emit("analysisResult", { score, level, reasons });
-    } catch (error) {
-      socket.emit("analysisResult", {
-        score: 0,
-        level: "Low",
-        reasons: ["Could not analyze text"],
-      });
-    }
-  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");

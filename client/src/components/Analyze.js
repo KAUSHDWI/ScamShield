@@ -1,33 +1,44 @@
-import { useEffect, useState, useMemo } from "react";
-import { io } from "socket.io-client";
+import { useState, useMemo } from "react";
 import { glassCard } from "../styles/glass";
 
-const socket = io("https://scamshield-yifc.onrender.com");
+const BASE_URL = "https://scamshield-yifc.onrender.com";
 
 export default function Analyze() {
   const [inputText, setInputText] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reported, setReported] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    socket.on("analysisResult", (data) => {
-      setResult(data);
-      setLoading(false);
-      setReported(false);
-    });
-
-    return () => socket.off("analysisResult");
-  }, []);
-
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!inputText.trim()) return;
 
     setLoading(true);
     setResult(null);
     setReported(false);
+    setError("");
 
-    socket.emit("analyzeText", inputText);
+    try {
+      const response = await fetch(`${BASE_URL}/api/analyze`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: inputText }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Analyze failed");
+      }
+
+      setResult(data);
+    } catch (err) {
+      setError(err.message || "Failed to fetch");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReport = async () => {
@@ -39,7 +50,7 @@ export default function Analyze() {
         return;
       }
 
-      await fetch("https://scamshield-yifc.onrender.com/api/report", {
+      const response = await fetch(`${BASE_URL}/api/report`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,9 +59,13 @@ export default function Analyze() {
         body: JSON.stringify({ text: inputText }),
       });
 
+      if (!response.ok) {
+        throw new Error("Report failed");
+      }
+
       setReported(true);
-    } catch (error) {
-      console.log("Report failed", error);
+    } catch (err) {
+      console.log("Report failed", err);
     }
   };
 
@@ -127,6 +142,10 @@ export default function Analyze() {
       >
         {loading ? "Analyzing..." : "Analyze"}
       </button>
+
+      {error && (
+        <p style={{ color: "#ef4444", marginTop: "12px" }}>{error}</p>
+      )}
 
       {result && (
         <div
