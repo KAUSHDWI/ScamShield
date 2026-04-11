@@ -87,11 +87,8 @@ io.on("connection", (socket) => {
       if (score > 60) level = "High";
       else if (score > 30) level = "Medium";
 
-      const result = { score, level, reasons };
-
-      socket.emit("analysisResult", result);
+      socket.emit("analysisResult", { score, level, reasons });
     } catch (error) {
-      console.log("Socket analyze error:", error.message);
       socket.emit("analysisResult", {
         score: 0,
         level: "Low",
