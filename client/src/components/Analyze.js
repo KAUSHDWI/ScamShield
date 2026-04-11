@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { glassCard } from "../styles/glass";
 
 const BASE_URL = "https://scamshield-yifc.onrender.com";
 
@@ -143,18 +142,18 @@ export default function Analyze() {
         {loading ? "Analyzing..." : "Analyze"}
       </button>
 
-      {error && (
-        <p style={{ color: "#ef4444", marginTop: "12px" }}>{error}</p>
-      )}
+      {error && <p style={{ color: "#ef4444", marginTop: "12px" }}>{error}</p>}
 
       {result && (
         <div
           style={{
-            ...glassCard,
             marginTop: "24px",
             maxWidth: "600px",
             marginInline: "auto",
             border: `1px solid ${getColor()}40`,
+            borderRadius: "16px",
+            padding: "20px",
+            background: "rgba(17, 24, 39, 0.72)",
             boxSizing: "border-box",
             textAlign: "left",
           }}

@@ -6,11 +6,7 @@ export default function Navbar({ currentUser, setCurrentUser }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
-    if (setCurrentUser) {
-      setCurrentUser(null);
-    }
-
+    if (setCurrentUser) setCurrentUser(null);
     navigate("/");
   };
 
@@ -25,8 +21,7 @@ export default function Navbar({ currentUser, setCurrentUser }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "rgba(5, 8, 22, 0.88)",
-        backdropFilter: "blur(12px)",
+        background: "rgba(5, 8, 22, 0.92)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
         zIndex: 1000,
         boxSizing: "border-box",
@@ -39,7 +34,6 @@ export default function Navbar({ currentUser, setCurrentUser }) {
           fontWeight: "800",
           color: "white",
           textDecoration: "none",
-          whiteSpace: "nowrap",
         }}
       >
         ScamShield
@@ -51,33 +45,19 @@ export default function Navbar({ currentUser, setCurrentUser }) {
           alignItems: "center",
           gap: "10px",
           flexWrap: "wrap",
-          justifyContent: "flex-end",
         }}
       >
-        <Link to="/" style={linkStyle}>
-          Home
-        </Link>
+        <Link to="/" style={linkStyle}>Home</Link>
 
-        {currentUser ? (
+        {!currentUser ? (
           <>
-            <Link to="/dashboard" style={linkStyle}>
-              Dashboard
-            </Link>
-
-            <button onClick={handleLogout} style={logoutStyle}>
-              Logout
-            </button>
+            <Link to="/login" style={linkStyle}>Login</Link>
+            <Link to="/signup" style={signupStyle}>Sign Up</Link>
           </>
         ) : (
-          <>
-            <Link to="/login" style={linkStyle}>
-              Login
-            </Link>
-
-            <Link to="/signup" style={signupStyle}>
-              Sign Up
-            </Link>
-          </>
+          <button onClick={handleLogout} style={logoutStyle}>
+            Logout
+          </button>
         )}
       </div>
     </nav>

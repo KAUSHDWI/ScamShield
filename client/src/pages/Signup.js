@@ -1,45 +1,35 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+const BASE_URL = "https://scamshield-yifc.onrender.com";
 
 export default function Signup() {
-  const navigate = useNavigate();
-
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
-
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSignup = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
-    setLoading(true);
-
     try {
-      const response = await fetch("https://scamshield-yifc.onrender.com/api/auth/signup", {
+      const response = await fetch(`${BASE_URL}/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          password: form.password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -50,139 +40,83 @@ export default function Signup() {
 
       navigate("/login");
     } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      setError(err.message || "Failed to fetch");
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "120px 20px 40px",
-        background: "linear-gradient(to bottom, #06070d, #0b0b12, #10111a)",
-      }}
-    >
+    <div style={{ minHeight: "100vh", padding: "120px 16px", color: "white" }}>
       <div
         style={{
-          width: "100%",
-          maxWidth: "520px",
-          padding: "36px",
-          borderRadius: "28px",
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 0 35px rgba(217,70,239,0.12)",
+          maxWidth: "400px",
+          margin: "0 auto",
+          background: "#111827",
+          padding: "24px",
+          borderRadius: "12px",
+          border: "1px solid #1f2937",
         }}
       >
-        <h1 style={{ fontSize: "36px", marginBottom: "10px" }}>
-          Create your account
-        </h1>
+        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Sign Up</h2>
 
-        <p style={{ color: "#cbd5e1", marginBottom: "24px" }}>
-          Join ScamShield and keep your job search safer.
-        </p>
-
-        <form onSubmit={handleSignup}>
-          <Input
-            label="Full Name"
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
             name="name"
-            value={form.name}
+            placeholder="Name"
+            value={formData.name}
             onChange={handleChange}
-            placeholder="Enter your full name"
+            required
+            style={inputStyle}
           />
 
-          <Input
-            label="Email"
+          <input
+            type="email"
             name="email"
-            value={form.email}
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
-            placeholder="Enter your email"
+            required
+            style={inputStyle}
           />
 
-          <Input
-            label="Password"
+          <input
             type="password"
             name="password"
-            value={form.password}
+            placeholder="Password"
+            value={formData.password}
             onChange={handleChange}
-            placeholder="Create a password"
+            required
+            style={inputStyle}
           />
 
-          <Input
-            label="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm password"
-          />
+          {error && <p style={{ color: "#ef4444", marginBottom: "12px" }}>{error}</p>}
 
-          {error && (
-            <p style={{ color: "#f87171", marginBottom: "16px" }}>{error}</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              width: "100%",
-              padding: "14px",
-              borderRadius: "16px",
-              border: "none",
-              background: "linear-gradient(90deg, #d946ef, #ec4899)",
-              color: "white",
-              fontWeight: "700",
-              fontSize: "16px",
-              cursor: "pointer",
-              marginTop: "10px",
-            }}
-          >
-            {loading ? "Creating account..." : "Sign Up"}
+          <button type="submit" style={buttonStyle}>
+            Sign Up
           </button>
         </form>
-
-        <p style={{ marginTop: "20px", color: "#cbd5e1", textAlign: "center" }}>
-          Already have an account?{" "}
-          <Link to="/login" style={{ color: "#ec4899", textDecoration: "none" }}>
-            Login
-          </Link>
-        </p>
       </div>
     </div>
   );
 }
 
-function Input({ label, type = "text", ...props }) {
-  return (
-    <div style={{ marginBottom: "18px" }}>
-      <label
-        style={{
-          display: "block",
-          marginBottom: "8px",
-          color: "#e2e8f0",
-          fontSize: "14px",
-        }}
-      >
-        {label}
-      </label>
-      <input
-        type={type}
-        {...props}
-        style={{
-          width: "100%",
-          padding: "14px 16px",
-          borderRadius: "14px",
-          border: "1px solid rgba(255,255,255,0.08)",
-          background: "#11131c",
-          color: "white",
-          outline: "none",
-          fontSize: "15px",
-        }}
-      />
-    </div>
-  );
-}
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  marginBottom: "14px",
+  borderRadius: "8px",
+  border: "1px solid #374151",
+  background: "#0f172a",
+  color: "white",
+  boxSizing: "border-box",
+};
+
+const buttonStyle = {
+  width: "100%",
+  padding: "12px",
+  borderRadius: "8px",
+  border: "none",
+  background: "#2563eb",
+  color: "white",
+  cursor: "pointer",
+};
