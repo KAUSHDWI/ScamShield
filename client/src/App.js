@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Analyze from "./components/Analyze";
+import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
@@ -12,6 +13,7 @@ function Home() {
     <>
       <Hero />
       <Analyze />
+      <Footer />
     </>
   );
 }

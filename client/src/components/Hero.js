@@ -15,17 +15,19 @@ export default function Hero() {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        padding: "110px 18px 40px",
-        background: "linear-gradient(to bottom, #06070d, #0b0b12, #10111a)",
+        padding: "110px 20px 60px",
+        background:
+          "linear-gradient(to bottom, #06070d 0%, #0b0b12 45%, #10111a 100%)",
       }}
     >
-      <div style={{ maxWidth: "900px", width: "100%" }}>
+      <div style={{ maxWidth: "950px", width: "100%" }}>
         <h1
           style={{
-            fontSize: "clamp(38px, 9vw, 78px)",
+            fontSize: "clamp(42px, 8vw, 82px)",
             fontWeight: "800",
             lineHeight: "1.08",
-            marginBottom: "18px",
+            marginBottom: "20px",
+            letterSpacing: "-1px",
           }}
         >
           Detect Job Scams
@@ -44,31 +46,65 @@ export default function Hero() {
         <p
           style={{
             maxWidth: "760px",
-            margin: "0 auto 28px",
+            margin: "0 auto 32px",
             color: "#cbd5e1",
-            fontSize: "clamp(16px, 3.8vw, 22px)",
-            lineHeight: "1.7",
+            fontSize: "clamp(16px, 3vw, 21px)",
+            lineHeight: "1.8",
           }}
         >
-          Paste any job posting or recruiter message. Our system analyzes it in seconds
-          and flags deceptive patterns before you become a victim.
+          Paste any job posting or recruiter message and quickly check whether it
+          looks suspicious. ScamShield helps you spot risky patterns before you
+          take the next step.
         </p>
 
-        <button
-          onClick={handleScrollToAnalyze}
+        <div
           style={{
-            padding: "13px 24px",
-            borderRadius: "999px",
-            background: "#2563eb",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            fontWeight: "600",
-            fontSize: "15px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "14px",
+            flexWrap: "wrap",
           }}
         >
-          Analyze Now
-        </button>
+          <button
+            onClick={handleScrollToAnalyze}
+            style={{
+              padding: "14px 28px",
+              borderRadius: "999px",
+              background: "linear-gradient(90deg, #d946ef, #ec4899)",
+              color: "white",
+              border: "none",
+              cursor: "pointer",
+              fontWeight: "600",
+              fontSize: "15px",
+            }}
+          >
+            Analyze Now
+          </button>
+
+          <a
+            href="#footer"
+            style={{
+              padding: "14px 28px",
+              borderRadius: "999px",
+              border: "1px solid rgba(255,255,255,0.18)",
+              color: "white",
+              fontWeight: "600",
+              fontSize: "15px",
+            }}
+          >
+            Learn More
+          </a>
+        </div>
+
+        <p
+          style={{
+            marginTop: "22px",
+            color: "#94a3b8",
+            fontSize: "14px",
+          }}
+        >
+          Free to use · Quick results · Built for job seekers
+        </p>
       </div>
     </section>
   );
