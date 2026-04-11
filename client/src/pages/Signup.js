@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://scamshield-yifc.onrender.com";
+const BASE_URL = "https://scamshield-ylfc.onrender.com";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ export default function Signup() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,6 +23,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     try {
       const response = await fetch(`${BASE_URL}/api/auth/signup`, {
@@ -38,7 +40,10 @@ export default function Signup() {
         throw new Error(data.message || "Signup failed");
       }
 
-      navigate("/login");
+      setSuccess("Signup successful. Please login.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (err) {
       setError(err.message || "Failed to fetch");
     }
@@ -90,6 +95,7 @@ export default function Signup() {
           />
 
           {error && <p style={{ color: "#ef4444", marginBottom: "12px" }}>{error}</p>}
+          {success && <p style={{ color: "#22c55e", marginBottom: "12px" }}>{success}</p>}
 
           <button type="submit" style={buttonStyle}>
             Sign Up

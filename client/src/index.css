@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -16,8 +18,29 @@ html {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   background: #050816;
   color: white;
   overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font-family: "Inter", sans-serif;
+}
+
+input,
+textarea {
+  font-size: 16px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = "https://scamshield-yifc.onrender.com";
+const BASE_URL = "https://scamshield-ylfc.onrender.com";
 
 export default function Login({ setCurrentUser }) {
   const [formData, setFormData] = useState({
@@ -38,8 +38,12 @@ export default function Login({ setCurrentUser }) {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data));
-      setCurrentUser(data);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (setCurrentUser) {
+        setCurrentUser(data.user);
+      }
+
       navigate("/");
     } catch (err) {
       setError(err.message || "Failed to fetch");

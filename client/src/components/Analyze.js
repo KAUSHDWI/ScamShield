@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 
-const BASE_URL = "https://scamshield-yifc.onrender.com";
+const BASE_URL = "https://scamshield-ylfc.onrender.com";
 
 export default function Analyze() {
   const [inputText, setInputText] = useState("");

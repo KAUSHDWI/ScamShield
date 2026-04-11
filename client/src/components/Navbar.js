@@ -6,7 +6,11 @@ export default function Navbar({ currentUser, setCurrentUser }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    if (setCurrentUser) setCurrentUser(null);
+
+    if (setCurrentUser) {
+      setCurrentUser(null);
+    }
+
     navigate("/");
   };
 
@@ -21,7 +25,7 @@ export default function Navbar({ currentUser, setCurrentUser }) {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "rgba(5, 8, 22, 0.92)",
+        background: "rgba(5, 8, 22, 0.9)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
         zIndex: 1000,
         boxSizing: "border-box",
@@ -43,21 +47,34 @@ export default function Navbar({ currentUser, setCurrentUser }) {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "10px",
+          gap: "12px",
           flexWrap: "wrap",
         }}
       >
-        <Link to="/" style={linkStyle}>Home</Link>
+        <Link to="/" style={linkStyle}>
+          Home
+        </Link>
 
-        {!currentUser ? (
+        {currentUser ? (
           <>
-            <Link to="/login" style={linkStyle}>Login</Link>
-            <Link to="/signup" style={signupStyle}>Sign Up</Link>
+            <Link to="/dashboard" style={linkStyle}>
+              Dashboard
+            </Link>
+
+            <button onClick={handleLogout} style={logoutStyle}>
+              Logout
+            </button>
           </>
         ) : (
-          <button onClick={handleLogout} style={logoutStyle}>
-            Logout
-          </button>
+          <>
+            <Link to="/login" style={linkStyle}>
+              Login
+            </Link>
+
+            <Link to="/signup" style={signupStyle}>
+              Sign Up
+            </Link>
+          </>
         )}
       </div>
     </nav>
@@ -74,7 +91,7 @@ const linkStyle = {
 const signupStyle = {
   padding: "10px 18px",
   borderRadius: "999px",
-  background: "#3867f4",
+  background: "#2563eb",
   color: "white",
   fontWeight: "600",
   fontSize: "14px",

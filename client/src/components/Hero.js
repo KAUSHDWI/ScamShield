@@ -1,6 +1,7 @@
 export default function Hero() {
   const handleScrollToAnalyze = () => {
     const section = document.getElementById("analyze");
+
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
@@ -58,7 +59,7 @@ export default function Hero() {
           style={{
             padding: "13px 24px",
             borderRadius: "999px",
-            background: "#3867f4",
+            background: "#2563eb",
             color: "white",
             border: "none",
             cursor: "pointer",
