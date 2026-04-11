@@ -12,7 +12,7 @@ export default function Reports() {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch("http://localhost:5001/api/report");
+      const response = await fetch("https://scamshield-yifc.onrender.com/api/report");
       const data = await response.json();
       setReports(data);
     } catch (error) {

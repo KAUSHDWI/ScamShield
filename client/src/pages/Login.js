@@ -22,7 +22,7 @@ export default function Login({ setCurrentUser }) {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5001/api/auth/login", {
+      const response = await fetch("https://scamshield-yifc.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

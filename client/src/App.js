@@ -42,7 +42,7 @@ export default function App() {
       return;
     }
       
-      const response = await fetch("http://localhost:5001/api/analyze", {
+      const response = await fetch("https://scamshield-yifc.onrender.com/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

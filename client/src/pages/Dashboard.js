@@ -13,7 +13,7 @@ export default function Dashboard() {
   const fetchScans = async () => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch("http://localhost:5001/api/analyze", {
+    const res = await fetch("https://scamshield-yifc.onrender.com/api/analyze", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

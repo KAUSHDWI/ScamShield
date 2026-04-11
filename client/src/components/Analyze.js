@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { io } from "socket.io-client";
 import { glassCard } from "../styles/glass";
 
-const socket = io("http://localhost:5001");
+const socket = io("https://scamshield-yifc.onrender.com");
 
 export default function Analyze() {
   const [inputText, setInputText] = useState("");
@@ -39,7 +39,7 @@ export default function Analyze() {
         return;
       }
 
-      await fetch("http://localhost:5001/api/report", {
+      await fetch("https://scamshield-yifc.onrender.com/api/report", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
