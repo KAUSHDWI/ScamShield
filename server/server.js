@@ -15,24 +15,31 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://scam-shield-nu.vercel.app",
+  "https://www.scam-shield-nu.vercel.app",
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
 
 app.use(express.json());
 
-app.use("/api/analyze", analyzeRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/report", reportRoutes);
-
 app.get("/", (req, res) => {
   res.send("ScamShield backend is running");
 });
+
+app.use("/api/analyze", analyzeRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/report", reportRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
