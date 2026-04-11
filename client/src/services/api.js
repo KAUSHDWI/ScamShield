@@ -1,8 +1,7 @@
 // ── Base URL ─────────────────────────────────────────────────────────────────
 // In development, Create React App's "proxy" field in package.json forwards
 // /api/* requests to http://localhost:5000 automatically.
-const BASE_URL = process.env.REACT_APP_API_URL || "";
-
+const BASE_URL = "https://scamshield-yifc.onrender.com";
 /**
  * Sends job posting text to the backend for scam analysis.
  *
