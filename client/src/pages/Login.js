@@ -1,34 +1,33 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-const BASE_URL = "https://scamshield-yifc.onrender.com";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login({ setCurrentUser }) {
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/auth/login`, {
+      const response = await fetch("https://scamshield-yifc.onrender.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
 
       const data = await response.json();
@@ -38,77 +37,127 @@ export default function Login({ setCurrentUser }) {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data));
-      setCurrentUser(data);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      setCurrentUser(data.user);
+
       navigate("/");
     } catch (err) {
-      setError(err.message || "Failed to fetch");
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ minHeight: "100vh", padding: "100px 16px", color: "white" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "120px 20px 40px",
+        background: "linear-gradient(to bottom, #06070d, #0b0b12, #10111a)",
+      }}
+    >
       <div
         style={{
-          maxWidth: "400px",
-          margin: "0 auto",
-          background: "#111827",
-          padding: "24px",
-          borderRadius: "12px",
-          border: "1px solid #1f2937",
+          width: "100%",
+          maxWidth: "520px",
+          padding: "36px",
+          borderRadius: "28px",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 0 35px rgba(59,130,246,0.12)",
         }}
       >
-        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Login</h2>
+        <h1 style={{ fontSize: "36px", marginBottom: "10px" }}>
+          Welcome back
+        </h1>
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
+        <p style={{ color: "#cbd5e1", marginBottom: "24px" }}>
+          Login to continue protecting your job search.
+        </p>
+
+        <form onSubmit={handleLogin}>
+          <Input
+            label="Email"
             name="email"
-            placeholder="Email"
-            value={formData.email}
+            value={form.email}
             onChange={handleChange}
-            required
-            style={inputStyle}
+            placeholder="Enter your email"
           />
 
-          <input
+          <Input
+            label="Password"
             type="password"
             name="password"
-            placeholder="Password"
-            value={formData.password}
+            value={form.password}
             onChange={handleChange}
-            required
-            style={inputStyle}
+            placeholder="Enter your password"
           />
 
-          {error && <p style={{ color: "#ef4444" }}>{error}</p>}
+          {error && (
+            <p style={{ color: "#f87171", marginBottom: "16px" }}>{error}</p>
+          )}
 
-          <button type="submit" style={buttonStyle}>
-            Login
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: "100%",
+              padding: "14px",
+              borderRadius: "16px",
+              border: "none",
+              background: "linear-gradient(90deg, #3b82f6, #d946ef)",
+              color: "white",
+              fontWeight: "700",
+              fontSize: "16px",
+              cursor: "pointer",
+              marginTop: "10px",
+            }}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        <p style={{ marginTop: "20px", color: "#cbd5e1", textAlign: "center" }}>
+          Don’t have an account?{" "}
+          <Link to="/signup" style={{ color: "#ec4899", textDecoration: "none" }}>
+            Sign Up
+          </Link>
+        </p>
       </div>
     </div>
   );
 }
 
-const inputStyle = {
-  width: "100%",
-  padding: "12px",
-  marginBottom: "14px",
-  borderRadius: "8px",
-  border: "1px solid #374151",
-  background: "#0f172a",
-  color: "white",
-  boxSizing: "border-box",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "12px",
-  borderRadius: "8px",
-  border: "none",
-  background: "#2563eb",
-  color: "white",
-  cursor: "pointer",
-};
+function Input({ label, type = "text", ...props }) {
+  return (
+    <div style={{ marginBottom: "18px" }}>
+      <label
+        style={{
+          display: "block",
+          marginBottom: "8px",
+          color: "#e2e8f0",
+          fontSize: "14px",
+        }}
+      >
+        {label}
+      </label>
+      <input
+        type={type}
+        {...props}
+        style={{
+          width: "100%",
+          padding: "14px 16px",
+          borderRadius: "14px",
+          border: "1px solid rgba(255,255,255,0.08)",
+          background: "#11131c",
+          color: "white",
+          outline: "none",
+          fontSize: "15px",
+        }}
+      />
+    </div>
+  );
+}

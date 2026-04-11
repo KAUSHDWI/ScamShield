@@ -12,29 +12,25 @@ const reportRoutes = require("./routes/report");
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://scam-shield-nu.vercel.app",
-  "https://www.scam-shield-nu.vercel.app",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: true,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("ScamShield backend is running");
+});
+
+app.get("/health", (req, res) => {
+  res.json({ ok: true, message: "Backend is live" });
 });
 
 app.use("/api/analyze", analyzeRoutes);
@@ -50,9 +46,9 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"],
+    origin: true,
     credentials: true,
+    methods: ["GET", "POST"],
   },
 });
 
