@@ -6,7 +6,11 @@ export default function Navbar({ currentUser, setCurrentUser }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setCurrentUser(null);
+
+    if (setCurrentUser) {
+      setCurrentUser(null);
+    }
+
     navigate("/");
   };
 
@@ -15,13 +19,14 @@ export default function Navbar({ currentUser, setCurrentUser }) {
       style={{
         position: "fixed",
         top: 0,
+        left: 0,
         width: "100%",
-        padding: "14px 16px",
+        padding: "14px 18px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "rgba(10,10,20,0.7)",
-        backdropFilter: "blur(10px)",
+        background: "rgba(5, 8, 22, 0.88)",
+        backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
         zIndex: 1000,
         boxSizing: "border-box",
@@ -30,9 +35,9 @@ export default function Navbar({ currentUser, setCurrentUser }) {
       <Link
         to="/"
         style={{
-          color: "white",
           fontSize: "18px",
-          fontWeight: "700",
+          fontWeight: "800",
+          color: "white",
           textDecoration: "none",
           whiteSpace: "nowrap",
         }}
@@ -44,7 +49,7 @@ export default function Navbar({ currentUser, setCurrentUser }) {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "12px",
+          gap: "10px",
           flexWrap: "wrap",
           justifyContent: "flex-end",
         }}
@@ -53,44 +58,25 @@ export default function Navbar({ currentUser, setCurrentUser }) {
           Home
         </Link>
 
-        {currentUser && (
-          <Link to="/dashboard" style={linkStyle}>
-            Dashboard
-          </Link>
-        )}
+        {currentUser ? (
+          <>
+            <Link to="/dashboard" style={linkStyle}>
+              Dashboard
+            </Link>
 
-        <Link to="/reports" style={linkStyle}>
-          Reports
-        </Link>
-
-        {!currentUser ? (
+            <button onClick={handleLogout} style={logoutStyle}>
+              Logout
+            </button>
+          </>
+        ) : (
           <>
             <Link to="/login" style={linkStyle}>
               Login
             </Link>
 
-            <Link to="/signup" style={buttonStyle}>
+            <Link to="/signup" style={signupStyle}>
               Sign Up
             </Link>
-          </>
-        ) : (
-          <>
-            <span
-              style={{
-                color: "#cbd5e1",
-                fontSize: "13px",
-                maxWidth: "90px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              👤 {currentUser.name}
-            </span>
-
-            <button onClick={handleLogout} style={logoutStyle}>
-              Logout
-            </button>
           </>
         )}
       </div>
@@ -99,26 +85,26 @@ export default function Navbar({ currentUser, setCurrentUser }) {
 }
 
 const linkStyle = {
-  color: "#cbd5e1",
-  textDecoration: "none",
-  fontWeight: "500",
   fontSize: "14px",
+  fontWeight: "500",
+  color: "#e5e7eb",
+  textDecoration: "none",
 };
 
-const buttonStyle = {
-  padding: "8px 14px",
+const signupStyle = {
+  padding: "10px 18px",
   borderRadius: "999px",
-  background: "#2563eb",
+  background: "#3867f4",
   color: "white",
-  textDecoration: "none",
   fontWeight: "600",
   fontSize: "14px",
+  textDecoration: "none",
 };
 
 const logoutStyle = {
-  padding: "7px 12px",
+  padding: "8px 12px",
   borderRadius: "8px",
-  border: "1px solid rgba(255,255,255,0.2)",
+  border: "1px solid rgba(255,255,255,0.15)",
   background: "transparent",
   color: "white",
   cursor: "pointer",
