@@ -23,20 +23,14 @@ export default function Dashboard() {
     setScans(data);
   };
 
-  // 🔹 Stats
   const total = scans.length;
   const high = scans.filter((s) => s.level === "High").length;
   const medium = scans.filter((s) => s.level === "Medium").length;
   const low = scans.filter((s) => s.level === "Low").length;
 
-  // 🔹 Filter logic
   const filteredScans = scans.filter((scan) => {
-    const matchText = scan.text
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
+    const matchText = scan.text.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "All" || scan.level === filter;
-
     return matchText && matchFilter;
   });
 
@@ -47,17 +41,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{ padding: "100px 20px", color: "white" }}>
+    <div style={{ padding: "90px 16px 30px", color: "white", boxSizing: "border-box" }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-        
-        <h1>Your Dashboard</h1>
+        <h1 style={{ fontSize: "clamp(28px, 7vw, 36px)" }}>Your Dashboard</h1>
 
-        {/* 🔥 Stats Cards */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "15px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+            gap: "12px",
             marginTop: "20px",
           }}
         >
@@ -82,7 +74,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* 🔍 Search */}
         <input
           type="text"
           placeholder="Search scans..."
@@ -91,16 +82,23 @@ export default function Dashboard() {
           style={{
             width: "100%",
             padding: "10px",
-            marginTop: "25px",
+            marginTop: "20px",
             borderRadius: "8px",
             border: "1px solid #1f2937",
             background: "#111827",
             color: "white",
+            boxSizing: "border-box",
           }}
         />
 
-        {/* 🎯 Filter */}
-        <div style={{ marginTop: "15px", display: "flex", gap: "10px" }}>
+        <div
+          style={{
+            marginTop: "14px",
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
           {["All", "High", "Medium", "Low"].map((item) => (
             <button
               key={item}
@@ -112,6 +110,7 @@ export default function Dashboard() {
                 cursor: "pointer",
                 background: filter === item ? "#2563eb" : "#1f2937",
                 color: "white",
+                fontSize: "14px",
               }}
             >
               {item}
@@ -119,7 +118,6 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* 📊 Cards */}
         {filteredScans.map((scan) => {
           const color = getColor(scan.level);
 
@@ -128,19 +126,13 @@ export default function Dashboard() {
               key={scan._id}
               style={{
                 ...glassCard,
-                marginTop: "20px",
+                marginTop: "18px",
                 border: `1px solid ${color}40`,
                 transition: "0.2s",
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "translateY(-4px)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "translateY(0)")
-              }
             >
               <h3 style={{ color }}>Risk: {scan.level}</h3>
-              <p>{scan.text}</p>
+              <p style={{ lineHeight: "1.6", wordBreak: "break-word" }}>{scan.text}</p>
             </div>
           );
         })}

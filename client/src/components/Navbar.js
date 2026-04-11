@@ -16,31 +16,39 @@ export default function Navbar({ currentUser, setCurrentUser }) {
         position: "fixed",
         top: 0,
         width: "100%",
-        padding: "16px 40px",
+        padding: "14px 16px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "rgba(10,10,20,0.6)",
+        background: "rgba(10,10,20,0.7)",
         backdropFilter: "blur(10px)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
         zIndex: 1000,
+        boxSizing: "border-box",
       }}
     >
-      {/* Logo */}
       <Link
         to="/"
         style={{
           color: "white",
-          fontSize: "20px",
+          fontSize: "18px",
           fontWeight: "700",
           textDecoration: "none",
+          whiteSpace: "nowrap",
         }}
       >
         ScamShield
       </Link>
 
-      {/* Links */}
-      <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap",
+          justifyContent: "flex-end",
+        }}
+      >
         <Link to="/" style={linkStyle}>
           Home
         </Link>
@@ -49,12 +57,11 @@ export default function Navbar({ currentUser, setCurrentUser }) {
           <Link to="/dashboard" style={linkStyle}>
             Dashboard
           </Link>
-          
         )}
-        <Link to="/reports" style={linkStyle}>
-  Reports
-</Link>
 
+        <Link to="/reports" style={linkStyle}>
+          Reports
+        </Link>
 
         {!currentUser ? (
           <>
@@ -68,7 +75,16 @@ export default function Navbar({ currentUser, setCurrentUser }) {
           </>
         ) : (
           <>
-            <span style={{ color: "#cbd5e1", fontSize: "14px" }}>
+            <span
+              style={{
+                color: "#cbd5e1",
+                fontSize: "13px",
+                maxWidth: "90px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               👤 {currentUser.name}
             </span>
 
@@ -86,22 +102,25 @@ const linkStyle = {
   color: "#cbd5e1",
   textDecoration: "none",
   fontWeight: "500",
+  fontSize: "14px",
 };
 
 const buttonStyle = {
-  padding: "8px 16px",
+  padding: "8px 14px",
   borderRadius: "999px",
-  background: "linear-gradient(90deg, #d946ef, #ec4899)",
+  background: "#2563eb",
   color: "white",
   textDecoration: "none",
   fontWeight: "600",
+  fontSize: "14px",
 };
 
 const logoutStyle = {
-  padding: "6px 14px",
+  padding: "7px 12px",
   borderRadius: "8px",
   border: "1px solid rgba(255,255,255,0.2)",
   background: "transparent",
   color: "white",
   cursor: "pointer",
+  fontSize: "13px",
 };

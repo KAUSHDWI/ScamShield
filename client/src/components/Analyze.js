@@ -80,8 +80,17 @@ export default function Analyze() {
   }, [result, inputText]);
 
   return (
-    <section id="analyze" style={{ padding: "100px 20px", textAlign: "center" }}>
-      <h2>Analyze Job Message</h2>
+    <section
+      id="analyze"
+      style={{
+        padding: "80px 16px",
+        textAlign: "center",
+        boxSizing: "border-box",
+      }}
+    >
+      <h2 style={{ fontSize: "clamp(26px, 7vw, 36px)", marginBottom: "16px" }}>
+        Analyze Job Message
+      </h2>
 
       <textarea
         value={inputText}
@@ -96,6 +105,8 @@ export default function Analyze() {
           background: "#111827",
           color: "white",
           border: "1px solid #1f2937",
+          boxSizing: "border-box",
+          fontSize: "15px",
         }}
       />
 
@@ -111,6 +122,7 @@ export default function Analyze() {
           color: "white",
           border: "none",
           cursor: "pointer",
+          fontSize: "14px",
         }}
       >
         {loading ? "Analyzing..." : "Analyze"}
@@ -120,19 +132,24 @@ export default function Analyze() {
         <div
           style={{
             ...glassCard,
-            marginTop: "30px",
+            marginTop: "24px",
             maxWidth: "600px",
             marginInline: "auto",
             border: `1px solid ${getColor()}40`,
+            boxSizing: "border-box",
+            textAlign: "left",
           }}
         >
-          <h3 style={{ color: getColor() }}>Risk: {result.level}</h3>
+          <h3 style={{ color: getColor(), marginTop: 0 }}>Risk: {result.level}</h3>
 
-          <p>Score: {result.score}</p>
+          <p style={{ marginBottom: "10px" }}>Score: {result.score}</p>
 
-          <p dangerouslySetInnerHTML={{ __html: highlightedText }} />
+          <p
+            style={{ lineHeight: "1.6", wordBreak: "break-word" }}
+            dangerouslySetInnerHTML={{ __html: highlightedText }}
+          />
 
-          <ul>
+          <ul style={{ paddingLeft: "18px", lineHeight: "1.6" }}>
             {result.reasons.map((reason, index) => (
               <li key={index}>⚠ {reason}</li>
             ))}
@@ -149,6 +166,7 @@ export default function Analyze() {
                 border: "none",
                 borderRadius: "6px",
                 cursor: "pointer",
+                fontSize: "14px",
               }}
             >
               Report Scam
